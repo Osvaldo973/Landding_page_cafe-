@@ -1,4 +1,4 @@
-# Marsel & Patricia | Tienda de Café Premium ☕✨
+# Marsel & Patricia | Tienda de Café ☕✨
 
 Bienvenido al repositorio de **Marsel & Patricia**, una plataforma web premium diseñada para una tienda virtual de café artesanal de especialidad. Este proyecto combina una experiencia visual inmersiva para los amantes del café con una robusta integración con Firebase y WhatsApp para la gestión y realización de pedidos.
 
