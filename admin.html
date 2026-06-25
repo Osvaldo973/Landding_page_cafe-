@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | Marsel & Patricia</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Login Container -->
+    <div class="login-container" id="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-mug-hot"></i>
+                    Marsel <span>&amp; Patricia</span>
+                </a>
+                <h2>Panel de Administración</h2>
+                <p>Ingresa tus credenciales para gestionar productos y precios.</p>
+            </div>
+            <form id="login-form" class="admin-form">
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="login-email" required placeholder="correo@ejemplo.com" autocomplete="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="login-password" required placeholder="••••••••" autocomplete="current-password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+                </button>
+                <a href="index.html" class="back-home-link">
+                    <i class="fa-solid fa-arrow-left"></i> Volver a la Tienda
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Container (Oculto por defecto) -->
+    <div class="dashboard-container hidden" id="dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <div class="container db-header-content">
+                <a href="index.html" class="logo">
+                    <i class="fa-solid fa-mug-hot"></i>
+                    Marsel <span>&amp; Patricia</span> <span class="badge-admin">Admin</span>
+                </a>
+                <div class="user-info">
+                    <span id="user-display-email"><i class="fa-solid fa-user-circle"></i> admin@cafemp.com</span>
+                    <button id="btn-logout" class="btn btn-logout-icon" title="Cerrar Sesión">
+                        <i class="fa-solid fa-power-off"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="container db-main">
+            <div class="db-title-bar">
+                <div>
+                    <h1>Gestión de Productos</h1>
+                    <p>Agrega, edita o elimina los productos del catálogo de la tienda virtual.</p>
+                </div>
+                <button id="btn-add-product" class="btn btn-primary">
+                    <i class="fa-solid fa-plus"></i> Nuevo Producto
+                </button>
+            </div>
+
+            <!-- Products Table Card -->
+            <div class="db-card">
+                <div class="table-responsive">
+                    <table class="db-table">
+                        <thead>
+                            <tr>
+                                <th>Foto / Ícono</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th class="text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="db-products-list">
+                            <!-- Los productos se inyectarán aquí -->
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="loading-spinner-wrapper">
+                                        <i class="fa-solid fa-circle-notch fa-spin loading-spinner"></i>
+                                        <span>Cargando productos...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal (Add / Edit) -->
+    <div class="modal-overlay" id="product-modal-overlay">
+        <div class="modal modal-lg" id="product-modal">
+            <div class="modal-header">
+                <h2 id="modal-title-text"><i class="fa-solid fa-plus"></i> Agregar Nuevo Producto</h2>
+                <button class="modal-close" id="product-modal-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="product-form">
+                <div class="modal-body">
+                    <input type="hidden" id="product-id">
+                    
+                    <div class="form-grid">
+                        <!-- Left column -->
+                        <div class="form-grid-col">
+                            <div class="form-group">
+                                <label for="product-name">Nombre del Producto</label>
+                                <input type="text" id="product-name" required placeholder="Ej. Café Bourbon Premium">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group flex-1">
+                                    <label for="product-category">Categoría</label>
+                                    <select id="product-category" required>
+                                        <option value="Café en Grano">Café en Grano</option>
+                                        <option value="Café Molido">Café Molido</option>
+                                        <option value="Blend Exclusivo">Blend Exclusivo</option>
+                                        <option value="Cápsulas">Cápsulas</option>
+                                        <option value="Café Frío">Café Frío</option>
+                                        <option value="Packs Especiales">Packs Especiales</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <label for="product-price">Precio ($)</label>
+                                    <input type="number" id="product-price" step="0.01" min="0" required placeholder="0.00">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="product-desc">Descripción</label>
+                                <textarea id="product-desc" required rows="4" placeholder="Escribe las características principales del producto, notas de sabor, origen..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Right column (Image / Icon settings) -->
+                        <div class="form-grid-col">
+                            <div class="form-group">
+                                <label>Imagen del Producto</label>
+                                <div class="image-upload-zone" id="image-upload-zone">
+                                    <!-- Preview container -->
+                                    <div class="image-preview" id="image-preview">
+                                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                        <span>Selecciona o arrastra una imagen</span>
+                                    </div>
+                                    <input type="file" id="product-image-file" accept="image/*" class="file-input">
+                                </div>
+                                <!-- Progress bar -->
+                                <div class="upload-progress-bar-container hidden" id="upload-progress-container">
+                                    <div class="upload-progress-bar" id="upload-progress-bar">0%</div>
+                                </div>
+                                <p class="help-text">Sube una imagen para el producto (formato JPG, PNG, WEBP). Si no subes ninguna, se usará el ícono por defecto.</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="product-fallback-icon">Ícono de Respaldo (Si no hay foto)</label>
+                                <div class="icon-selector-grid">
+                                    <select id="product-fallback-icon">
+                                        <option value="fa-seedling" data-icon="fa-seedling">Semilla (fa-seedling)</option>
+                                        <option value="fa-mug-hot" data-icon="fa-mug-hot" selected>Taza Caliente (fa-mug-hot)</option>
+                                        <option value="fa-blender" data-icon="fa-blender">Licuadora (fa-blender)</option>
+                                        <option value="fa-capsules" data-icon="fa-capsules">Cápsulas (fa-capsules)</option>
+                                        <option value="fa-glass-water" data-icon="fa-glass-water">Vaso Frío (fa-glass-water)</option>
+                                        <option value="fa-gift" data-icon="fa-gift">Regalo (fa-gift)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-product">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save-product">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase configuration & script modules -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
